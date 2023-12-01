@@ -1,12 +1,56 @@
-import { useParams } from "@remix-run/react";
+import { redirect } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import { db } from "../db.server";
 
-function Post() {
-  const params = useParams();
+export const loader = async ({ params }) => {
+  const id = parseInt(params.postId);
+  const post = await db.post.findUnique({
+    where: { id: id },
+  });
+
+  if (!post) throw new Error("post not found");
+
+  const data = { post };
+  return data;
+};
+
+//delete
+export const action = async ({ request, params }) => {
+  const form = await request.formData();
+  if (form.get("_method") === "delete") {
+    const id = parseInt(params.postId);
+    const post = await db.post.findUnique({
+      where: { id: id },
+    });
+
+    if (!post) throw new Error("post not found");
+
+    await db.post.delete({ where: { id: id } });
+
+    return redirect("/posts");
+  }
+};
+
+export default function Post() {
+  const { post } = useLoaderData();
   return (
-    <div>
-      <h1>Post {params.postId} </h1>
-    </div>
+    <>
+      <div className="page-header">
+        <h1>{post.title}</h1>
+        <Link to="/posts" className="btn">
+          Back
+        </Link>
+      </div>
+      <div className="page-content">
+        <p>{post.body}</p>
+      </div>
+
+      <div className="page-footer">
+        <form method="post">
+          <input type="hidden" name="_method" value="delete" />
+          <button className="btn btn-delete">Delete</button>
+        </form>
+      </div>
+    </>
   );
 }
-
-export default Post;

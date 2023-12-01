@@ -1,12 +1,13 @@
 import { Link, useLoaderData } from "@remix-run/react";
+import { db } from "../db.server";
 
-export const loader = () => {
+export const loader = async () => {
   const data = {
-    posts: [
-      { id: 1, title: "Post 1", body: "this is post" },
-      { id: 2, title: "Post 2", body: "this is post" },
-      { id: 3, title: "Post 3", body: "this is post" },
-    ],
+    posts: await db.post.findMany({
+      take: 20,
+      select: { id: true, title: true, body: true },
+      orderBy: { createdAt: "desc" },
+    }),
   };
   return data;
 };
@@ -24,7 +25,7 @@ function PostList() {
       <ul className="posts-list">
         {posts.map((post) => (
           <li key={post.id}>
-            <Link to={post.id}>
+            <Link to={`/posts/` + post.id}>
               <h3>{post.title}</h3>
             </Link>
           </li>

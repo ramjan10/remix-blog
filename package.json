@@ -9,6 +9,7 @@
     "start": "remix-serve ./build/index.js"
   },
   "dependencies": {
+    "@prisma/client": "^5.6.0",
     "@remix-run/css-bundle": "^2.3.1",
     "@remix-run/node": "^2.3.1",
     "@remix-run/react": "^2.3.1",
@@ -20,7 +21,8 @@
   "devDependencies": {
     "@remix-run/dev": "^2.3.1",
     "@remix-run/eslint-config": "^2.3.1",
-    "eslint": "^8.38.0"
+    "eslint": "^8.38.0",
+    "prisma": "^5.6.0"
   },
   "engines": {
     "node": ">=18.0.0"

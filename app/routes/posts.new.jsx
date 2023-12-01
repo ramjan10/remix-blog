@@ -1,4 +1,5 @@
 import { redirect } from "@remix-run/node";
+import { db } from "../db.server";
 
 function NewPost() {
   return (
@@ -31,6 +32,7 @@ export const action = async ({ request }) => {
   const fields = { title, body };
 
   //@todo database;
+  const post = await db.post.create({ data: fields });
 
   return redirect("/posts");
 };
