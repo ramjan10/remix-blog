@@ -1,12 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `ContactList` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE `ContactList`;
-
 -- CreateTable
 CREATE TABLE `Post` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
