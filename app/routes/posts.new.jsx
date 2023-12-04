@@ -20,7 +20,8 @@ export const action = async ({ request }) => {
   const form = await request.formData();
   const title = form.get("title");
   const body = form.get("body");
-  const fields = { title, body };
+  const userId = "1";
+  const fields = { title, body, userId };
 
   const fieldErrors = {
     title: validateTitle(title),
@@ -52,12 +53,10 @@ function NewPost() {
             type="text"
             id="title"
             name="title"
-            defaultValue={actionData.fields.title}
+            defaultValue={actionData ? actionData.fields.title : ""}
           />
           <div className="error">
-            <p>
-              {actionData.fieldErrors.title ? actionData.fieldErrors.title : ""}
-            </p>
+            <p>{actionData ? actionData.fieldErrors.title : ""}</p>
           </div>
         </div>
         <div className="form-control">
@@ -65,12 +64,10 @@ function NewPost() {
           <textarea
             name="body"
             id="body"
-            defaultValue={actionData.fields.body}
+            defaultValue={actionData ? actionData.fields.body : ""}
           ></textarea>
           <div className="error">
-            <p>
-              {actionData.fieldErrors.body ? actionData.fieldErrors.body : ""}
-            </p>
+            <p>{actionData ? actionData.fieldErrors.body : ""}</p>
           </div>
         </div>
         <button type="submit" className="btn btn-block">
