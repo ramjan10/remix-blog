@@ -1,4 +1,3 @@
-import { createSessionStorage } from "@remix-run/node";
 import bcrypt from "bcrypt";
 import { db } from "./db.server";
 
@@ -16,13 +15,7 @@ export async function login({ username, password }) {
   return user;
 }
 
-const sessionSecrateKey = process.env.SESSION_SECRATE;
-if (!sessionSecrateKey) {
-  throw new Error("no section error");
-}
-//sesstion store
-const storage = createSessionStorage({
-  cookie: {
-    name: "remix_blog",
-  },
-});
+// const sessionSecrate = process.env.SESSION_SECRATE;
+// if (!sessionSecrate) {
+//   throw new Error("no section error");
+// }

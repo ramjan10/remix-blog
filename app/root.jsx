@@ -1,4 +1,12 @@
-import { Link, Links, LiveReload, Meta, Outlet } from "@remix-run/react";
+import {
+  Link,
+  Links,
+  LiveReload,
+  Meta,
+  Outlet,
+  isRouteErrorResponse,
+  useRouteError,
+} from "@remix-run/react";
 import globalStylesUrl from "./styles/global.css";
 
 export const links = () => [{ rel: "stylesheet", href: globalStylesUrl }];
@@ -59,13 +67,40 @@ function Layout({ children }) {
   );
 }
 
-export function ErrorBoundry({ error }) {
-  return (
-    <Document>
-      <Layout>
-        <h1>Error</h1>
-        <p> {error.message} </p>
-      </Layout>
-    </Document>
-  );
+export function ErrorBoundry() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <>
+        <Document>
+          <Layout>
+            <div>
+              <h1>
+                {error.status} {error.statusText}
+              </h1>
+              <p>{error.data}</p>
+            </div>
+          </Layout>
+        </Document>
+      </>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <>
+        <Document>
+          <Layout>
+            <div>
+              <h1>Error</h1>
+              <p>{error.message}</p>
+              <p>The stack trace is:</p>
+              <pre>{error.stack}</pre>
+            </div>
+          </Layout>
+        </Document>
+      </>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
 }

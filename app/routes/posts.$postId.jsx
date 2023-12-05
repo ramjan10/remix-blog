@@ -1,5 +1,5 @@
 import { redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, useParams } from "@remix-run/react";
 import { db } from "../db.server";
 
 export const loader = async ({ params }) => {
@@ -33,12 +33,17 @@ export const action = async ({ request, params }) => {
 
 export default function Post() {
   const { post } = useLoaderData();
+  const params = useParams();
+
   return (
     <>
       <div className="page-header">
         <h1>{post.title}</h1>
         <Link to="/posts" className="btn">
           Back
+        </Link>
+        <Link to={`/posts/update/${params.postId}`} className="btn">
+          update
         </Link>
       </div>
       <div className="page-content">
