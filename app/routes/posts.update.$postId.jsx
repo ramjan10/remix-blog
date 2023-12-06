@@ -26,7 +26,8 @@ export const loader = async ({ params }) => {
   return post;
 };
 
-export const action = async ({ request }) => {
+export const action = async ({ request, params }) => {
+  const id = parseInt(params.postId);
   const form = await request.formData();
   const title = form.get("title");
   const body = form.get("body");
@@ -42,7 +43,12 @@ export const action = async ({ request }) => {
     return json({ fieldErrors, fields }, { status: 404 });
   }
 
-  const post = db.post.update({ data: fields });
+  const post = await db.post.update({
+    where: {
+      id: id,
+    },
+    data: fields,
+  });
 
   return redirect("/posts");
 };

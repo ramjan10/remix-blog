@@ -42,9 +42,6 @@ export default function Post() {
         <Link to="/posts" className="btn">
           Back
         </Link>
-        <Link to={`/posts/update/${params.postId}`} className="btn">
-          update
-        </Link>
       </div>
       <div className="page-content">
         <p>{post.body}</p>
@@ -54,6 +51,9 @@ export default function Post() {
         <form method="post">
           <input type="hidden" name="_method" value="delete" />
           <button className="btn btn-delete">Delete</button>
+          <Link to={`/posts/update/${params.postId}`} className="btn">
+            update
+          </Link>
         </form>
       </div>
     </>
